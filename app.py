@@ -1,6 +1,6 @@
 from flask import Flask , request , jsonify , render_template
 import pandas as pd
-import pulp
+import numpy as np
 import os
 app = Flask(__name__)
 @app.route('/')
