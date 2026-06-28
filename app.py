@@ -1,12 +1,26 @@
-from flask import Flask , request , jsonify , render_template
-import pandas as pd
-import numpy as np
-import os
+from flask import Flask, render_template, request
+from optimizer import optimize_portfolio
+
 app = Flask(__name__)
-@app.route('/')
+
+@app.route("/", methods=["GET","POST"])
 def home():
-    return render_template('index.html')
-# The main logic code is hidden
-port = int(os.environ.get("PORT" , 5000))
-if(__name__ == "__main__"):
-    app.run(host="0.0.0.0" , port= port)
+
+    result = None
+
+    if request.method == "POST":
+
+        risk = int(request.form["risk"])
+
+        result = optimize_portfolio(
+            risk
+        )
+
+    return render_template(
+        "index.html",
+        result=result
+    )
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
