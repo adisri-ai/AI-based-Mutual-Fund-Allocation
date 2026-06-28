@@ -309,17 +309,7 @@ http://127.0.0.1:5000
 
 # ☁️ Deployment
 
-The project can be deployed for free using:
-
-* Render
-* Railway (if free tier is available)
-* PythonAnywhere (limited free tier)
-
-Deployment requires:
-
-* requirements.txt
-* Procfile
-* GitHub repository
+The project has been deployed using [Render](fundalloc.onrender.com/) and [streamlit](https://fundalloc-2025-3bhiigezjmbl9oumuf5dqu.streamlit.app)
 
 ---
 
