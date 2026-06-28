@@ -1,4 +1,4 @@
-```markdown
+
 # 📈 AI-Based Mutual Fund Allocation
 
 > **An AI-powered mutual fund portfolio optimization system that identifies the optimal combination of mutual funds based on historical performance while respecting user-defined annual downside risk constraints.**
