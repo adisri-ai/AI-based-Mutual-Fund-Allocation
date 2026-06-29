@@ -1,15 +1,305 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+ 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FundAlloc-AI</title>
-    <link rel="icon" href="./static/logo.png">
-    <link rel="stylesheet" href="./static/styles.css">
+ 
+    <title>Portfolio Optimizer</title>
+ 
+    <link rel="stylesheet"
+          href="{{ url_for('static',filename='css/styles.css')}}">
+ 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+          rel="stylesheet">
+ 
 </head>
+ 
 <body>
-   The remaining code is hidden
+ 
+<div class="overlay">
+ 
+<div class="container">
+ 
+<div class="left-panel">
+ 
+    <img src="{{ url_for('static', filename='images/logo.png') }}"
+         class="logo">
+ 
+    <h1>Mutual Fund Portfolio Optimizer</h1>
+ 
+    <div class="slideshow">
+ 
+        <img src="{{ url_for('static',filename='slides/slide1.png') }}"
+             id="slideImage">
+ 
+        <div class="slide-dots" id="slideDots"></div>
+ 
+    </div>
+ 
+    <p>Build the most efficient portfolio in seconds.</p>
+ 
+    <div class="trust-badges">
+        <div class="badge">700+ Funds</div>
+        <div class="badge">11 Years Data</div>
+        <div class="badge">AI Powered</div>
+    </div>
+ 
+</div>
+ 
+<div class="right-panel">
+ 
+    <div class="panel-header">
+        <span class="eyebrow">Smart Allocation Engine</span>
+        <h2>Find Your Optimal Portfolio</h2>
+        <p class="subtext">Tell us your risk appetite — we'll find the historically best-performing allocation.</p>
+    </div>
+ 
+    <form method="POST" id="optimizerForm">
+ 
+        <div class="input-group">
+ 
+            <label>Worst annual return you can tolerate in a bad market year</label>
+ 
+            <div class="input-wrapper">
+                <span class="input-icon">%</span>
+                <input
+                    type="number"
+                    step="0.01"
+                    name="risk"
+                    placeholder="e.g. -1.08"
+                    required>
+            </div>
+ 
+            <span class="input-hint">Enter a negative value, e.g. -5 means you can bear up to 5% annual loss</span>
+ 
+        </div>
+ 
+        <button type="submit">
+            <span class="btn-text">Optimize My Portfolio</span>
+            <span class="btn-arrow">→</span>
+        </button>
+ 
+    </form>
+ 
+    <div id="loading" style="display:none;">
+        <div class="loading-inner">
+            <div class="spinner"></div>
+            <p>Analyzing millions of combinations…</p>
+        </div>
+    </div>
+ 
+    {% if result %}
+ 
+    <div class="result">
+ 
+        <div class="result-section">
+            <h3 class="result-heading">Recommended Funds</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fund</th>
+                        <th>Allocation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for i in range(result.funds|length) %}
+                    <tr>
+                        <td>{{ result.funds[i] }}</td>
+                        <td><span class="alloc-badge">{{ "%.2f"|format(result.allocations[i] * 100) }}%</span></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+ 
+        <div class="result-section">
+            <h3 class="result-heading">Year-wise Returns</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Return (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for year in range(2015,2025) %}
+                    <tr>
+                        <td>{{ year }}</td>
+                        <td class="{% if result.returns[loop.index0]|float >= 0 %}positive{% else %}negative{% endif %}">
+                            {{ result.returns[loop.index0] }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+ 
+        <div class="avg-return-card">
+            <span class="avg-label">Average Annual Return</span>
+            <span class="avg-value">{{ result.ans }}</span>
+        </div>
+ 
+    </div>
+ 
+    {% endif %}
+ 
+</div>
+ 
+</div>
+ 
+</div>
+ 
+<div class="faq-section">
+ 
+    <div class="faq-header">
+        <span class="eyebrow">Got Questions?</span>
+        <h2>Frequently Asked Questions</h2>
+    </div>
+ 
+    <div class="faq-grid">
+ 
+    <div class="faq">
+        <button class="faq-btn">
+            <span>What is AI-Based Mutual Fund Screener?</span>
+            <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+            <p>The AI-Based Mutual Fund Screener is a web-based tool that uses advanced AI algorithms to screen historical data of more than 700 mutual funds and identify the combination of funds that generated the highest CAGR within your chosen annual risk limits over the last 11 years. It is designed to support investment decisions by providing meaningful insights rather than investment advice.</p>
+        </div>
+    </div>
+ 
+    <div class="faq">
+        <button class="faq-btn">
+            <span>How does the screener find the best portfolio?</span>
+            <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+            <p>You specify your maximum acceptable annual loss. The AI analyzes 11 years of historical data from over 700 mutual funds and searches millions of possible combinations to identify the portfolio that historically produced the maximum CAGR while staying within your risk limits every year.</p>
+        </div>
+    </div>
+ 
+    <div class="faq">
+        <button class="faq-btn">
+            <span>Some identified funds were not available 6 years back.</span>
+            <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+            <p>Funds launched after 2018 are also considered. For years before their launch, the corresponding category average return has been used to maintain consistency in the historical back-test.</p>
+        </div>
+    </div>
+ 
+    <div class="faq">
+        <button class="faq-btn">
+            <span>Does the screener provide investment advice?</span>
+            <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+            <p>No. The generated portfolios are based solely on historical data. They are intended to provide insights and support decision-making. All investment decisions remain entirely yours.</p>
+        </div>
+    </div>
+ 
+    <div class="faq">
+        <button class="faq-btn">
+            <span>Who is the screener designed for?</span>
+            <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+            <p>It is suitable for individual investors, fund houses, portfolio managers, financial advisors and institutions seeking AI-assisted portfolio optimization.</p>
+        </div>
+    </div>
+ 
+    <div class="faq">
+        <button class="faq-btn">
+            <span>How reliable is the historical data?</span>
+            <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+            <p>The screener uses publicly available mutual fund data covering the last 11 years. Although strong historical performance may indicate future potential, it cannot guarantee future returns.</p>
+        </div>
+    </div>
+ 
+    <div class="faq">
+        <button class="faq-btn">
+            <span>Can the screener guarantee future returns?</span>
+            <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+            <p>No. Markets constantly evolve. The screener identifies historically optimal portfolios within your risk constraints, but future performance can differ.</p>
+        </div>
+    </div>
+ 
+    <div class="faq">
+        <button class="faq-btn">
+            <span>What makes this screener unique?</span>
+            <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+            <p>Unlike conventional screeners that simply rank mutual funds, this AI-powered screener searches across hundreds of funds to construct an optimized portfolio maximizing returns within your specified downside limits, saving considerable research time.</p>
+        </div>
+    </div>
+ 
+    </div>
+ 
+</div>
+ 
+<footer class="site-footer">
+    <p>For informational purposes only. Not investment advice. Past performance does not guarantee future results.</p>
+</footer>
+ 
+<script>
+ 
+document.getElementById("optimizerForm").addEventListener("submit", function(){
+    document.getElementById("loading").style.display = "flex";
+});
+ 
+const slides = [
+"{{ url_for('static',filename='slides/slide1.png') }}",
+"{{ url_for('static',filename='slides/slide2.png') }}",
+"{{ url_for('static',filename='slides/slide3.png') }}",
+"{{ url_for('static',filename='slides/slide4.png') }}",
+"{{ url_for('static',filename='slides/slide5.png') }}",
+"{{ url_for('static',filename='slides/slide6.png') }}",
+"{{ url_for('static',filename='slides/slide7.png') }}"
+];
+ 
+let current = 0;
+const img = document.getElementById("slideImage");
+const dotsContainer = document.getElementById("slideDots");
+ 
+// Build dots
+slides.forEach((_,i) => {
+    const dot = document.createElement("span");
+    dot.className = "dot" + (i===0 ? " active" : "");
+    dot.addEventListener("click", () => goToSlide(i));
+    dotsContainer.appendChild(dot);
+});
+ 
+function goToSlide(n){
+    current = n;
+    img.style.opacity = "0";
+    img.src = slides[current];
+    img.style.opacity = "1";
+    document.querySelectorAll(".dot").forEach((d,i) => d.classList.toggle("active", i===current));
+}
+ 
+ 
+document.querySelectorAll(".faq-btn").forEach(button => {
+    button.addEventListener("click", () => {
+        const faq = button.parentElement;
+        const content = button.nextElementSibling;
+        const icon = button.querySelector(".faq-icon");
+        const isOpen = content.style.display === "block";
+        document.querySelectorAll(".faq-content").forEach(c => c.style.display = "none");
+        document.querySelectorAll(".faq-icon").forEach(ic => ic.textContent = "+");
+        document.querySelectorAll(".faq").forEach(f => f.classList.remove("open"));
+        if(!isOpen){
+            content.style.display = "block";
+            icon.textContent = "−";
+            faq.classList.add("open");
+        }
+    });
+});
+ 
+</script>
+ 
 </body>
 </html>
-
-
