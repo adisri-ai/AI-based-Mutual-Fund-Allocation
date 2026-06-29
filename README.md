@@ -35,7 +35,7 @@ The user specifies the **maximum acceptable loss** that they are willing to tole
 
 The optimization engine then:
 
-1. Reads historical performance of over **700 mutual funds**
+1. Reads historical performance of over **500 mutual funds**
 2. Evaluates thousands of possible portfolio combinations
 3. Eliminates portfolios violating the user's annual downside limit
 4. Identifies the portfolio that generated the **highest historical average return**
@@ -206,7 +206,7 @@ Formulate Linear Programming Problem
     ▼
 ```
 
-Solve using PuLP
+Solve using linear programming algorithms
 
 ```
     │
@@ -270,40 +270,6 @@ The web application provides:
 - Interactive FAQ section
 - Responsive portfolio tables
 - Loading animation during optimization
-
----
-
-# 🚀 Installation
-
-Clone the repository
-
-```bash
-git clone https://github.com/yourusername/AI-Based-Mutual-Fund-Allocation.git
-````
-
-Move into the project
-
-```bash
-cd AI-Based-Mutual-Fund-Allocation
-```
-
-Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the application
-
-```bash
-python app.py
-```
-
-Visit
-
-```
-http://127.0.0.1:5000
-```
 
 ---
 
@@ -376,28 +342,13 @@ Past performance is **not** a guarantee of future returns. Users should conduct 
 
 ---
 
-# 🔮 Future Enhancements
-
-* Live NAV integration
-* Real-time mutual fund data
-* Multiple optimization objectives
-* Efficient Frontier visualization
-* Portfolio comparison
-* Export portfolio to PDF/Excel
-* User authentication
-* Cloud database integration
-* Portfolio rebalancing recommendations
-* AI-powered market insights
-
----
 
 # 👨‍💻 Author
 
-Developed as an AI-powered portfolio optimization project demonstrating the application of optimization techniques and historical financial data analysis for mutual fund allocation.
+Developed as an AI-powered portfolio optimization project demonstrating the application of optimization techniques and historical financial data analysis for mutual fund allocation by [Aditya Shrivastava](https://www.github.com/adisri-ai).
 
 ---
 
-## ⭐ If you found this project useful, consider giving it a star on GitHub!
 
 ```
 ```
